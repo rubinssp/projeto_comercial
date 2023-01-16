@@ -4,20 +4,41 @@
  */
 package model.bean;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author luisf
  */
 public class Projeto {
-    
+
     private int idprojeto;
     private String nome;
     private String datainicio;
     private String dataconclusao;
     private Profissional profissional;
     private Cliente cliente;
-    
+
     public Projeto() {
+    }
+
+    public Projeto(ResultSet rs) throws SQLException {
+
+        this.setIdprojeto(rs.getInt("idprojeto"));
+        this.setNome(rs.getString("nome"));
+        this.setDatainicio(rs.getString("datainicio"));
+        this.setDataconclusao(rs.getString("dataconclusao"));
+
+        Profissional prof = new Profissional();
+        prof.setNome(rs.getString("prnome"));
+        prof.setIdprofissional(rs.getInt("idprofissional"));
+        this.setProfissional(prof);
+
+        Cliente c = new Cliente();
+        c.setNome(rs.getString("cnome"));
+        c.setIdcliente(rs.getInt("idcliente"));
+        this.setCliente(c);
     }
 
     public Projeto(String nome, String datainicio, String dataconclusao, Profissional profissional, Cliente cliente) {
@@ -28,8 +49,6 @@ public class Projeto {
         this.cliente = cliente;
     }
 
-    
-    
     public int getIdprojeto() {
         return idprojeto;
     }
@@ -78,7 +97,9 @@ public class Projeto {
         this.cliente = cliente;
     }
 
-    
-    
-    
+    @Override
+    public String toString() {
+        return this.getNome();
+    }
+
 }
