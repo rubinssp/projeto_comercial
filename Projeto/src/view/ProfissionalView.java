@@ -5,10 +5,12 @@
 package view;
 
 import controller.ProfissionalController;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.bean.Profissional;
 import regex.ValidaCampos;
+import tablemodel.ProfissionalTableModel;
 import util.StringUtil;
 
 /**
@@ -16,12 +18,16 @@ import util.StringUtil;
  * @author aluno
  */
 public class ProfissionalView extends javax.swing.JFrame {
+    
+ 
+    private Profissional profissional;
 
     ProfissionalController profissionalController = new ProfissionalController();
+    ProfissionalTableModel modeloTableProfissionais;
      
     public ProfissionalView() {
         initComponents(); 
-        DefaultTableModel modeloTableProfissionais = (DefaultTableModel) jTableProfissionais.getModel();
+        this.getListaProfissionais();
         
     }
 public void limpaCampos(){
@@ -34,20 +40,9 @@ public void limpaCampos(){
         jTextFieldNome.requestFocus();
     }
 public void getListaProfissionais(){
-        DefaultTableModel modeloTableProfissionais = (DefaultTableModel) jTableProfissionais.getModel();
-        modeloTableProfissionais.setNumRows(0);
-        
-        for (Profissional p : profissionalController.read()){
-        
-            modeloTableProfissionais.addRow(new Object[]{
-            p.getIdprofissional(),
-            p.getNome(),
-            p.getCpf(),
-            p.getTelefone(),
-            p.getEndereco(), 
-            p.getRegprofissional(),
-            p.getDescricao()});    
-        }    
+        modeloTableProfissionais = new ProfissionalTableModel(profissionalController.read());        
+
+        jTableProfissionais.setModel(modeloTableProfissionais);
     }
  private boolean validaCamposProfissionais() {
         if(!ValidaCampos.validaNome(jTextFieldNome.getText())){
@@ -78,6 +73,8 @@ public void getListaProfissionais(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -96,6 +93,7 @@ public void getListaProfissionais(){
         jLabel7 = new javax.swing.JLabel();
         jTextFieldRegprofissional = new javax.swing.JTextField();
         jTextFieldDescricao = new javax.swing.JTextField();
+        jButtonProjetos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Profissionais");
@@ -159,20 +157,12 @@ public void getListaProfissionais(){
 
         jTableProfissionais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Id", "Nome", "CPF", "Telefone", "Endereço", "Registro Profissional", "Descrição"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         jTableProfissionais.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableProfissionaisMouseClicked(evt);
@@ -196,6 +186,15 @@ public void getListaProfissionais(){
             }
         });
 
+        jButtonProjetos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/8542253_project_diagram_icon.png"))); // NOI18N
+        jButtonProjetos.setText("Projetos");
+        jButtonProjetos.setEnabled(false);
+        jButtonProjetos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonProjetosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,39 +203,26 @@ public void getListaProfissionais(){
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(29, 29, 29)
+                                .addComponent(jFormattedTextFieldCPF))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(jFormattedTextFieldCPF))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, Short.MAX_VALUE))
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldRegprofissional, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jButtonAdicionar)
-                                .addGap(61, 61, 61)
-                                .addComponent(jButtonExcluir)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldRegprofissional, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(14, 14, 14))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButtonAtualizar)
-                                .addGap(40, 40, 40))))
+                                .addComponent(jLabel7)
+                                .addGap(32, 32, 32)
+                                .addComponent(jTextFieldDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(14, 14, 14))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -247,22 +233,31 @@ public void getListaProfissionais(){
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextFieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(177, 177, 177))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonAdicionar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonExcluir)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButtonAtualizar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonProjetos)
+                        .addGap(0, 17, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(189, 189, 189)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,9 +281,10 @@ public void getListaProfissionais(){
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonExcluir)
                     .addComponent(jButtonAtualizar)
-                    .addComponent(jButtonAdicionar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonAdicionar)
+                    .addComponent(jButtonProjetos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -335,7 +331,7 @@ public void getListaProfissionais(){
     }//GEN-LAST:event_jTextFieldDescricaoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        this.getListaProfissionais();
+       // this.getListaProfissionais();
     }//GEN-LAST:event_formWindowOpened
 
     private void jButtonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarActionPerformed
@@ -356,12 +352,16 @@ public void getListaProfissionais(){
 
     private void jTableProfissionaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProfissionaisMouseClicked
          if(jTableProfissionais.getSelectedRow() != -1){
-            jTextFieldNome.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 1).toString());
-            jFormattedTextFieldCPF.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 2).toString());
-            jFormattedTextFieldTelefone.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 3).toString());
-            jTextFieldEndereco.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 4).toString());
-            jTextFieldRegprofissional.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 5).toString());
-            jTextFieldDescricao.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 6).toString());
+            jButtonProjetos.setEnabled(true);
+            Profissional profissional =  modeloTableProfissionais.getProfissional(jTableProfissionais.getSelectedRow());
+            this.profissional = profissional;
+             
+            jTextFieldNome.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 0).toString());
+            jFormattedTextFieldCPF.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 1).toString());
+            jFormattedTextFieldTelefone.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 2).toString());
+            jTextFieldEndereco.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 3).toString());
+            jTextFieldRegprofissional.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 4).toString());
+            jTextFieldDescricao.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 5).toString());
             
         }
     }//GEN-LAST:event_jTableProfissionaisMouseClicked
@@ -369,6 +369,14 @@ public void getListaProfissionais(){
     private void jTextFieldRegprofissionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldRegprofissionalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldRegprofissionalActionPerformed
+
+    private void jButtonProjetosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProjetosActionPerformed
+        ProfissionalProjetoView frmProfissionalProjeto = new ProfissionalProjetoView();
+        frmProfissionalProjeto.profissional = this.profissional;
+        frmProfissionalProjeto.setVisible(true);
+        frmProfissionalProjeto.jTextFieldProfissional.setText(this.profissional.getNome());
+        this.dispose();
+    }//GEN-LAST:event_jButtonProjetosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,9 +415,12 @@ public void getListaProfissionais(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButtonAdicionar;
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JButton jButtonProjetos;
     private javax.swing.JFormattedTextField jFormattedTextFieldCPF;
     private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
     private javax.swing.JLabel jLabel1;

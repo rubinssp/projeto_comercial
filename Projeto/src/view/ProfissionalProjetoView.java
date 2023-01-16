@@ -5,7 +5,8 @@
 package view;
 
 import connection.ConnectionFactory;
-import controller.ProfissionalProjetoContoller;
+import controller.ClienteController;
+import controller.ProfissionalProjetoController;
 import controller.ProjetoController;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
     public Profissional profissional;
     private boolean alterar = false;
     
-    ProfissionalProjetoController profissionalprojetoController = new ProfissionalProjetoController();
+    ProfissionalProjetoController profissionalprojetoController;
+    ClienteController clienteController;
     ProfissionalProjetoTableModel tableModelProfissionalProjeto;
     public ProfissionalProjetoView() {
         initComponents();
@@ -115,6 +117,11 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
         jLabel2.setText("Projeto");
 
         jComboBoxProjetos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jComboBoxProjetos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxProjetosActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Valor:");
 
@@ -144,9 +151,9 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(54, 54, 54)
                         .addComponent(jLabel2)
-                        .addGap(56, 56, 56)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBoxProjetos, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(90, 90, 90)
@@ -243,22 +250,23 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jButtonIncluir)
-                        .addGap(29, 29, 29)
+                        .addGap(52, 52, 52)
                         .addComponent(jButtonSalvar)
-                        .addGap(36, 36, 36)
-                        .addComponent(jButtonExcluir)
-                        .addGap(92, 92, 92)
-                        .addComponent(Imprimir)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                        .addGap(44, 44, 44)
+                        .addComponent(jButtonExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(61, 61, 61)
+                        .addComponent(Imprimir)
+                        .addGap(97, 97, 97)))
+                .addGap(12, 12, 12))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+                .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIncluir)
                     .addComponent(jButtonSalvar)
-                    .addComponent(jButtonExcluir)
+                    .addComponent(jButtonExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Imprimir))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -298,6 +306,7 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldValorKeyTyped
@@ -313,16 +322,14 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldHorasTrabalhadasKeyTyped
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-        Projeto projeto = (Projeto) jComboBoxProjetos.getSelectedItem();
-        profissionalprojetoController.create(this.profissional, projeto, 
-                jTextFieldValor.getText(), jTextFieldHorasTrabalhadas.getText());
+       Projeto projeto = (Projeto) jComboBoxProjetos.getSelectedItem();
+       profissionalprojetoController.create( Double.parseDouble(jTextFieldValor.getText()), jTextFieldHorasTrabalhadas.getText(), this.profissional,(Projeto) jComboBoxProjetos.getSelectedItem());
         
         this.getProjetosDoProfissional();
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        if (profissionalProjetoController.update)(this.profissional, 
-        (Projeto) jComboBoxProjetos.getSelectedItem(){
+        if (profissionalprojetoController.update(Double.parseDouble(jTextFieldValor.getText()), jTextFieldHorasTrabalhadas.getText(), this.profissional,(Projeto) jComboBoxProjetos.getSelectedItem())){
         JOptionPane.showMessageDialog(this, "Alteraçao realizada com sucesso");
     } else{
         JOptionPane.showMessageDialog(this, "Nao foi possivel realizar a alteraçao!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -332,7 +339,7 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         Projeto projeto = (Projeto) jComboBoxProjetos.getSelectedItem();
-     if(   profissionalprojetoController.delete(this.profissional.getIdprofissional(), projeto.getIdprojeto())){
+     if(profissionalprojetoController.delete(this.profissional.getIdprofissional(), projeto.getIdprojeto())){
         JOptionPane.showMessageDialog(this, "Exclusao realizada com sucesso!");
     } else{
          JOptionPane.showMessageDialog(this, "Nao foi possível realizar a exclusao");
@@ -371,7 +378,7 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
        
         Connection con = ConnectionFactory.getConnection();
        
-       String src = "src/reports/ListagemProfissionais.jasper";
+       String src = "src/reports/ListagemProfissionalProjetos.jasper";
        
        JasperPrint jasperPrint = null;
        Map parameters = new HashMap();
@@ -392,6 +399,10 @@ public class ProfissionalProjetoView extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.getListaProjetos();
     }//GEN-LAST:event_formWindowOpened
+
+    private void jComboBoxProjetosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProjetosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxProjetosActionPerformed
   
     
     /**

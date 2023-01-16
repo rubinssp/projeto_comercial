@@ -4,11 +4,12 @@
  */
 package view;
 
+import bo.FiltroBO;
 import controller.ClienteController;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.bean.Cliente;
 import regex.ValidaCampos;
+import tablemodel.ClienteProjetosTableModel;
 import tablemodel.ClienteTableModel;
 import util.StringUtil;
 
@@ -19,9 +20,12 @@ import util.StringUtil;
 public class ClienteView extends javax.swing.JFrame {
     
     public Cliente cliente;
+    private int idCliente = 0;
     private boolean alterar =false;
     ClienteController clienteController = new ClienteController();
     ClienteTableModel modeloTableClientes;
+    ClienteProjetosTableModel modeloTableClientesProjeto;
+    
     public ClienteView() {
         initComponents(); 
         clienteController = new ClienteController();
@@ -31,6 +35,7 @@ public class ClienteView extends javax.swing.JFrame {
         }else {
             jTextFieldNome.requestFocus();
         }
+        this.getListaClientes();
         
     }
     public void limpaCampos(){
@@ -41,18 +46,9 @@ public class ClienteView extends javax.swing.JFrame {
         jTextFieldNome.requestFocus();
     }
     public void getListaClientes(){
-        DefaultTableModel modeloTableClientes = (DefaultTableModel) jTableClientes.getModel();
-        modeloTableClientes.setNumRows(0);
-        
-        for (Cliente c : clienteController.read()){
-        
-            modeloTableClientes.addRow(new Object[]{
-            c.getIdcliente(),
-            c.getNome(),
-            c.getCpf(),
-            c.getTelefone(),
-            c.getEndereco()});
-        }
+        modeloTableClientes = new ClienteTableModel(clienteController.read());
+        modeloTableClientesProjeto = new ClienteProjetosTableModel(clienteController.recuperarClientes());
+        jTableClientes.setModel(modeloTableClientesProjeto);
     
     }
     private boolean validaCamposClientes() {
@@ -74,7 +70,15 @@ public class ClienteView extends javax.swing.JFrame {
         }
         return true;
     }
-    
+    private void preencheCampos(Cliente cliente){
+       this.idCliente = cliente.getIdcliente();
+       jTextFieldNome.setText(cliente.getNome());
+       jFormattedTextFieldCPF.setText(cliente.getCpf());
+       jFormattedTextFieldTelefone.setText(cliente.getTelefone());
+       jTextFieldEndereco.setText(cliente.getEndereco());
+       
+       this.alterar = true;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,6 +103,7 @@ public class ClienteView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableClientes = new javax.swing.JTable();
         jTextFieldEndereco = new javax.swing.JTextField();
+        jButtonParticipacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Clientes");
@@ -173,20 +178,12 @@ public class ClienteView extends javax.swing.JFrame {
 
         jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Id", "Nome", "CPF", "Telefone", "Endereço"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         jTableClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableClientesMouseClicked(evt);
@@ -194,43 +191,53 @@ public class ClienteView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableClientes);
 
+        jButtonParticipacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/6843091_businessman_effective_effective employees_employee_professional_icon (1).png"))); // NOI18N
+        jButtonParticipacao.setText("Participaçao");
+        jButtonParticipacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonParticipacaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonAdicionar)
-                        .addGap(32, 32, 32)
-                        .addComponent(jButtonExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAtualizar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonAdicionar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonAtualizar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonParticipacao)
+                                .addGap(16, 16, 16))
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jFormattedTextFieldTelefone))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jFormattedTextFieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jFormattedTextFieldCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(177, 177, 177))
+                        .addGap(243, 243, 243)
+                        .addComponent(jLabel1)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,10 +264,11 @@ public class ClienteView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonExcluir)
                     .addComponent(jButtonAtualizar)
-                    .addComponent(jButtonAdicionar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jButtonAdicionar)
+                    .addComponent(jButtonParticipacao))
+                .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pack();
@@ -293,7 +301,8 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
        if(jTableClientes.getSelectedRow() != -1){
-       clienteController.delete((int) jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0));
+           Cliente cliente = modeloTableClientes.getCliente(jTableClientes.getSelectedRow());
+       clienteController.delete(cliente.getIdcliente());
        
        this.getListaClientes();
        
@@ -304,7 +313,8 @@ public class ClienteView extends javax.swing.JFrame {
     private void jButtonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarActionPerformed
         if(validaCamposClientes()){
         if(jTableClientes.getSelectedRow() != -1){
-            clienteController.update((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0),
+            Cliente cliente = modeloTableClientes.getCliente(jTableClientes.getSelectedRow());
+            clienteController.update(cliente.getIdcliente(),
                     jTextFieldNome.getText(),
                     jFormattedTextFieldCPF.getText(),
                     jFormattedTextFieldTelefone.getText(),
@@ -323,6 +333,8 @@ public class ClienteView extends javax.swing.JFrame {
             jFormattedTextFieldTelefone.setText(jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 3).toString());
             jTextFieldEndereco.setText(jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 4).toString());
             
+            jButtonExcluir.setEnabled((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 5)== 0);
+            jButtonParticipacao.setEnabled((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 5)== 1);
         }
     }//GEN-LAST:event_jTableClientesMouseClicked
 
@@ -333,6 +345,14 @@ public class ClienteView extends javax.swing.JFrame {
     private void jFormattedTextFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextFieldTelefoneActionPerformed
+
+    private void jButtonParticipacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParticipacaoActionPerformed
+        ParticipacaoProjetosView frmProjeto = new ParticipacaoProjetosView();
+        frmProjeto.setFiltro(new FiltroBO((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0),"cliente"));
+        frmProjeto.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_jButtonParticipacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -374,6 +394,7 @@ public class ClienteView extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdicionar;
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JButton jButtonParticipacao;
     private javax.swing.JFormattedTextField jFormattedTextFieldCPF;
     private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
     private javax.swing.JLabel jLabel1;

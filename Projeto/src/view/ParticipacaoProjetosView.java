@@ -4,6 +4,7 @@
  */
 package view;
 
+import bo.FiltroBO;
 import controller.ClienteController;
 import controller.ProfissionalController;
 import controller.ProjetoController;
@@ -19,58 +20,67 @@ import util.StringUtil;
  *
  * @author aluno
  */
-public class ProjetoView extends javax.swing.JFrame {
+public class ParticipacaoProjetosView extends javax.swing.JFrame {
 
     ProjetoController projetoController = new ProjetoController();
     ProjetoTableModel modeloTableProjetos;
-    
-    public ProjetoView() {
+    FiltroBO filtro;
+
+    public ParticipacaoProjetosView() {
+
         initComponents();
-        modeloTableProjetos = new ProjetoTableModel(projetoController.read());
-        
-        jTableProjetos.setModel(modeloTableProjetos);
+
     }
+
     public void getListaProfissionais() {
         ProfissionalController profissionalController = new ProfissionalController();
-        
-        for(Profissional p : profissionalController.read()){
-        
+
+        for (Profissional p : profissionalController.read()) {
+
             jComboBoxProfissionais.addItem(p);
         }
     }
-    public void getListaProjetos(){
-       modeloTableProjetos = new ProjetoTableModel(projetoController.read());
-        
+
+    public void getListaProjetos() {
+        this.modeloTableProjetos = new ProjetoTableModel(projetoController.read());
+
         jTableProjetos.setModel(modeloTableProjetos);
     }
-    
-    public void getListaClientes(){
+
+    public void getListaClientes() {
         ClienteController clienteController = new ClienteController();
-        
-        for(Cliente p :clienteController.read()){
-        
+
+        for (Cliente p : clienteController.read()) {
+
             jComboBoxClientes.addItem(p);
         }
     }
-    
-     private boolean validaCamposClientes() {
-        if(!ValidaCampos.validaNome(jTextFieldNome.getText())){
+
+    private boolean validaCamposClientes() {
+        if (!ValidaCampos.validaNome(jTextFieldNome.getText())) {
             JOptionPane.showMessageDialog(this, "Nome Inválido!");
             return false;
         }
-        if(!ValidaCampos.validaDataInicio(jTextFieldDataInicio.getText())){
+        if (!ValidaCampos.validaDataInicio(jTextFieldDataInicio.getText())) {
             JOptionPane.showMessageDialog(this, "Endereço Inválido!");
             return false;
         }
-        if(!ValidaCampos.validaDataConclusao(jTextFieldDataConclusao.getText())){
+        if (!ValidaCampos.validaDataConclusao(jTextFieldDataConclusao.getText())) {
             JOptionPane.showMessageDialog(this, "Telefone Inválido!");
             return false;
         }
 
         return true;
     }
-    
-    
+
+    public void setFiltro(FiltroBO filtro) {
+        this.filtro = filtro;
+        System.out.println("jejeje" + filtro);
+        modeloTableProjetos = new ProjetoTableModel(projetoController.filtro(this.filtro));
+
+        jTableProjetos.setModel(modeloTableProjetos);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -80,7 +90,6 @@ public class ProjetoView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldNome = new javax.swing.JTextField();
-        jButtonAdicionar = new javax.swing.JButton();
         jButtonAtualizar = new javax.swing.JButton();
         jButtonRemover = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -113,14 +122,6 @@ public class ProjetoView extends javax.swing.JFrame {
         jTextFieldNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldNomeActionPerformed(evt);
-            }
-        });
-
-        jButtonAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/299068_add_sign_icon.png"))); // NOI18N
-        jButtonAdicionar.setText("Adicionar");
-        jButtonAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAdicionarActionPerformed(evt);
             }
         });
 
@@ -190,7 +191,7 @@ public class ProjetoView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
@@ -204,25 +205,19 @@ public class ProjetoView extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxProfissionais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonAdicionar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonAtualizar))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jTextFieldDataConclusao, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(83, 83, 83)
-                                        .addComponent(jLabel6)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel6))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonRemover)
-                                        .addGap(38, 38, 38))))))
+                                        .addComponent(jButtonAtualizar)
+                                        .addGap(89, 89, 89)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonRemover, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -252,12 +247,11 @@ public class ProjetoView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBoxProfissionais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAdicionar)
                     .addComponent(jButtonAtualizar)
                     .addComponent(jButtonRemover))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -270,87 +264,53 @@ public class ProjetoView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNomeActionPerformed
 
-    private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
-        if (jComboBoxClientes.getSelectedItem() != null 
-                && !jTextFieldNome.getText().equals(StringUtil.EMPTY_FIELD)
-                && !jTextFieldDataInicio.getText().equals(StringUtil.EMPTY_FIELD)
-                && !jTextFieldDataConclusao.getText().equals(StringUtil.EMPTY_FIELD)){
-        
-            Cliente cliente = (Cliente) jComboBoxClientes.getSelectedItem();
-        
-        if(jComboBoxProfissionais.getSelectedItem() != null
-                && !jTextFieldNome.getText().equals(StringUtil.EMPTY_FIELD)
-                && !jTextFieldDataInicio.getText().equals(StringUtil.EMPTY_FIELD)
-                && !jTextFieldDataConclusao.getText().equals(StringUtil.EMPTY_FIELD)){
-            
-            Profissional profissional = (Profissional) jComboBoxProfissionais.getSelectedItem();
-            
-         if(projetoController.create(jTextFieldNome.getText(), jTextFieldDataInicio.getText(), jTextFieldDataConclusao.getText(),
-                 profissional, cliente) ){
-            JOptionPane.showMessageDialog(this, "Projeto salvo com sucesso");
-            jTextFieldNome.setText(StringUtil.EMPTY_FIELD);
-            jTextFieldDataInicio.setText(StringUtil.EMPTY_FIELD);
-            jTextFieldDataConclusao.setText(StringUtil.EMPTY_FIELD);
-            jComboBoxProfissionais.setSelectedIndex(0);
-            jComboBoxClientes.setSelectedIndex(0);
-            
-            this.getListaProjetos();
-         }else{
-             JOptionPane.showMessageDialog(this,"Não foi possível salvar o projeto", "Erro", JOptionPane.ERROR_MESSAGE);
-         }
-             
-        }
-     }
-    }//GEN-LAST:event_jButtonAdicionarActionPerformed
-    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.getListaProfissionais();
         this.getListaClientes();
-        this.getListaProjetos();
 
     }//GEN-LAST:event_formWindowOpened
 
     private void jButtonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarActionPerformed
-        if(jTableProjetos.getSelectedRow() != -1 && Objects.nonNull(jComboBoxProfissionais.getSelectedItem()) 
-                && Objects.nonNull(jComboBoxClientes.getSelectedItem())){
+        if (jTableProjetos.getSelectedRow() != -1 && Objects.nonNull(jComboBoxProfissionais.getSelectedItem())
+                && Objects.nonNull(jComboBoxClientes.getSelectedItem())) {
             Profissional profissional = (Profissional) jComboBoxProfissionais.getSelectedItem();
             Cliente cliente = (Cliente) jComboBoxClientes.getSelectedItem();
-            projetoController.update((int) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 0),jTextFieldNome.getText(),
-                    jTextFieldDataInicio.getText(),jTextFieldDataConclusao.getText(), profissional, cliente);
-            
+            projetoController.update((int) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 0), jTextFieldNome.getText(),
+                    jTextFieldDataInicio.getText(), jTextFieldDataConclusao.getText(), profissional, cliente);
+
             this.getListaProjetos();
-            
+
             jTextFieldNome.setText(StringUtil.EMPTY_FIELD);
             jTextFieldDataInicio.setText(StringUtil.EMPTY_FIELD);
             jTextFieldDataConclusao.setText(StringUtil.EMPTY_FIELD);
             jComboBoxProfissionais.setSelectedIndex(0);
             jComboBoxClientes.setSelectedIndex(0);
-         }
+        }
     }//GEN-LAST:event_jButtonAtualizarActionPerformed
 
     private void jTableProjetosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProjetosMouseClicked
-         if(jTableProjetos.getSelectedRow() != -1){
-            jTextFieldNome.setText((String)jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 1));
-            jTextFieldDataInicio.setText((String)jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 2));
-            jTextFieldDataConclusao.setText((String)jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 3));
-            String profissional = ((Profissional)jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 4)).getNome();
-            String cliente = ((Cliente)jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(),5)).getNome();
-            System.out.println("cliente: " + cliente);
-            for(int i=0; i < jComboBoxProfissionais.getItemCount(); i++){
+        if (jTableProjetos.getSelectedRow() != -1) {
+            jTextFieldNome.setText((String) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 1));
+            jTextFieldDataInicio.setText((String) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 2));
+            jTextFieldDataConclusao.setText((String) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 3));
+            String profissional = (String) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 4);
+            String cliente = (String) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 5);
+
+            for (int i = 0; i < jComboBoxProfissionais.getItemCount(); i++) {
                 Profissional p = (Profissional) jComboBoxProfissionais.getItemAt(i);
-                if(p.getNome().equals(profissional)){
-                    
+                if (p.getNome().equals(profissional)) {
+
                     jComboBoxProfissionais.setSelectedIndex(i);
                 }
             }
-            for(int i=0; i < jComboBoxClientes.getItemCount(); i++){
+            for (int i = 0; i < jComboBoxClientes.getItemCount(); i++) {
                 Cliente c = (Cliente) jComboBoxClientes.getItemAt(i);
-                if(c.getNome().equals(cliente)){
-                    
+                if (c.getNome().equals(cliente)) {
+
                     jComboBoxClientes.setSelectedIndex(i);
                 }
             }
-         }
+        }
     }//GEN-LAST:event_jTableProjetosMouseClicked
 
     private void jTextFieldDataConclusaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDataConclusaoActionPerformed
@@ -362,23 +322,23 @@ public class ProjetoView extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxClientesActionPerformed
 
     private void jButtonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverActionPerformed
-        if(jTableProjetos.getSelectedRow() != -1){
-        projetoController.delete((int) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 0));
-        
-        this.getListaProfissionais();
-        this.getListaClientes();
-        this.getListaProjetos();
-        
-        jTextFieldNome.setText(StringUtil.EMPTY_FIELD);
-        jTextFieldDataInicio.setText(StringUtil.EMPTY_FIELD);
-        jTextFieldDataConclusao.setText(StringUtil.EMPTY_FIELD);
-        jComboBoxProfissionais.setSelectedIndex(0);
-        jComboBoxClientes.setSelectedIndex(0);
-        }else{
-            JOptionPane.showMessageDialog(null,"Selecione um projeto para excluir!");
+        if (jTableProjetos.getSelectedRow() != -1) {
+            projetoController.delete((int) jTableProjetos.getValueAt(jTableProjetos.getSelectedRow(), 0));
+
+            this.getListaProfissionais();
+            this.getListaClientes();
+            this.getListaProjetos();
+
+            jTextFieldNome.setText(StringUtil.EMPTY_FIELD);
+            jTextFieldDataInicio.setText(StringUtil.EMPTY_FIELD);
+            jTextFieldDataConclusao.setText(StringUtil.EMPTY_FIELD);
+            jComboBoxProfissionais.setSelectedIndex(0);
+            jComboBoxClientes.setSelectedIndex(0);
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um projeto para excluir!");
         }
     }//GEN-LAST:event_jButtonRemoverActionPerformed
-    
+
     /**
      * @param args the command line arguments
      */
@@ -396,27 +356,28 @@ public class ProjetoView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProjetoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParticipacaoProjetosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProjetoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParticipacaoProjetosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProjetoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParticipacaoProjetosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProjetoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ParticipacaoProjetosView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProjetoView().setVisible(true);
+                new ParticipacaoProjetosView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAdicionar;
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonRemover;
     private javax.swing.JComboBox<Object> jComboBoxClientes;
