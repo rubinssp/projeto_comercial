@@ -15,7 +15,7 @@ import model.bean.Projeto;
  */
 public class ProjetoTableModel extends AbstractTableModel{
     private List<Projeto> listaProjetos;
-    private String[] colunas = {"Nome", "Data de Inicio", "Data de Conclusao", "Profissional", "Cliente"};
+    private String[] colunas = {"#Id", "Nome", "Data de Inicio", "Data de Conclusao", "Profissional", "Cliente"};
     
 
     public ProjetoTableModel(){
@@ -43,15 +43,18 @@ public class ProjetoTableModel extends AbstractTableModel{
         Projeto projeto = listaProjetos.get(linha);
         switch (coluna) {
             case 0:
-                return projeto.getNome();
+                return projeto.getIdprojeto();
             case 1:
-                return projeto.getDatainicio();
+                return projeto.getNome();
             case 2:
-                return projeto.getDataconclusao();
+                return projeto.getDatainicio();
             case 3:
-                return projeto.getProfissional();
+                return projeto.getDataconclusao();
             case 4:
+                return projeto.getProfissional();
+            case 5:
                 return projeto.getCliente();
+                
             default:
                 return "";            
        }

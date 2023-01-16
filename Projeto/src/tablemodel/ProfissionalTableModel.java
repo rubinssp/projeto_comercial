@@ -14,21 +14,21 @@ import model.bean.Profissional;
  * @author luisf
  */
 public class ProfissionalTableModel extends AbstractTableModel {
-    
+
     private List<Profissional> listaProfissionais;
     private String[] colunas = {"Nome", "CPF", "Telefone", "Endereço", "Registro Profissional", "Descriçao"};
-    
 
-    public ProfissionalTableModel(){
-        
+    public ProfissionalTableModel() {
+
         listaProfissionais = new ArrayList<>();
-    
+
     }
-    
-    public ProfissionalTableModel(List<Profissional> profissionais){
+
+    public ProfissionalTableModel(List<Profissional> profissionais) {
         this();
         this.listaProfissionais.addAll(profissionais);
-    }    
+    }
+
     @Override
     public int getRowCount() {
         return listaProfissionais.size();
@@ -46,7 +46,7 @@ public class ProfissionalTableModel extends AbstractTableModel {
             case 0:
                 return profissional.getNome();
             case 1:
-                return  profissional.getCpf();
+                return profissional.getCpf();
             case 2:
                 return profissional.getTelefone();
             case 3:
@@ -56,20 +56,20 @@ public class ProfissionalTableModel extends AbstractTableModel {
             case 5:
                 return profissional.getDescricao();
             default:
-                return "";            
-       }
+                return "";
+        }
     }
 
     @Override
     public String getColumnName(int column) {
-       return colunas[column];  
+        return colunas[column];
     }
-    
-    public Profissional getProfissional(int linha){
-        if(linha >= listaProfissionais.size()){
+
+    public Profissional getProfissional(int linha) {
+        if (linha >= listaProfissionais.size()) {
             return null;
         }
         return listaProfissionais.get(linha);
     }
-    
+
 }

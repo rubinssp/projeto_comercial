@@ -14,20 +14,21 @@ import model.bean.Cliente;
  * @author luisf
  */
 public class ClienteTableModel extends AbstractTableModel {
-    private List<Cliente> listaClientes;
-    private String[] colunas = {"Nome", "CPF", "Telefone", "Endereço"};
-    
 
-    public ClienteTableModel(){
-        
+    private List<Cliente> listaClientes;
+    private String[] colunas = {"Nome", "CPF", "Telefone", "Endereço", "Projetos"};
+
+    public ClienteTableModel() {
+
         listaClientes = new ArrayList<>();
-    
+
     }
-    
-    public ClienteTableModel(List<Cliente> clientes){
+
+    public ClienteTableModel(List<Cliente> clientes) {
         this();
         this.listaClientes.addAll(clientes);
-    }    
+    }
+
     @Override
     public int getRowCount() {
         return listaClientes.size();
@@ -50,20 +51,23 @@ public class ClienteTableModel extends AbstractTableModel {
                 return cliente.getTelefone();
             case 3:
                 return cliente.getEndereco();
+            case 4:
+                return cliente.getIdcliente();
             default:
-                return "";            
-       }
+                return "";
+        }
     }
 
     @Override
     public String getColumnName(int column) {
-       return colunas[column];  
+        return colunas[column];
     }
-    
-    public Cliente getCliente(int linha){
-        if(linha >= listaClientes.size()){
+
+    public Cliente getCliente(int linha) {
+        if (linha >= listaClientes.size()) {
             return null;
         }
         return listaClientes.get(linha);
     }
+
 }
