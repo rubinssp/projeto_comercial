@@ -14,50 +14,49 @@ import model.dao.ProfissionalProjetoDAO;
  *
  * @author luisf
  */
-public class ProfissionalProjetoContoller {
-     public boolean create(double valor, String horastrabalhadas, Profissional profissional, Projeto projeto) {
+public class ProfissionalProjetoController {
+
+    public boolean create(double valor, String horastrabalhadas, Profissional profissional, Projeto projeto) {
         ProfissionalProjeto profissionalprojeto = new ProfissionalProjeto();
         profissionalprojeto.setValor(valor);
         profissionalprojeto.setHorastrabalhadas(horastrabalhadas);
         profissionalprojeto.setProfissional(profissional);
         profissionalprojeto.setProjeto(projeto);
-       
-        
-        
+
         ProfissionalProjetoDAO profissionalprojetoDAO = new ProfissionalProjetoDAO();
         return profissionalprojetoDAO.create(profissionalprojeto);
-        
+
     }
-    public ArrayList<ProfissionalProjeto> getProjetosPorProfissional(int idprofissional){
-    ProfissionalProjetoDAO profissionalprojetoDAO = new ProfissionalProjetoDAO();
-    return profissionalprojetoDAO.getProjetoPorProfissional(idprofissional);
+
+    public ArrayList<ProfissionalProjeto> getProjetosPorProfissional(int idprofissional) {
+        ProfissionalProjetoDAO profissionalprojetoDAO = new ProfissionalProjetoDAO();
+        return profissionalprojetoDAO.getProjetoPorProfissional(idprofissional);
     }
-    
-    public boolean update(double valor, String horastrabalhadas, Profissional profissional, Projeto projeto){
+
+    public boolean update(double valor, String horastrabalhadas, Profissional profissional, Projeto projeto) {
         ProfissionalProjeto profissionalprojeto = new ProfissionalProjeto();
         profissionalprojeto.setValor(valor);
         profissionalprojeto.setHorastrabalhadas(horastrabalhadas);
         profissionalprojeto.setProfissional(profissional);
         profissionalprojeto.setProjeto(projeto);
-        
-        
-        
+
         ProfissionalProjetoDAO profissionalprojetoDAO = new ProfissionalProjetoDAO();
         return profissionalprojetoDAO.update(profissionalprojeto);
     }
-    public boolean delete (int idProfissional, int idProjeto) {
+
+    public boolean delete(int idProfissional, int idProjeto) {
         ProfissionalProjeto profissionalprojeto = new ProfissionalProjeto();
-        Profissional profissional= new Profissional();
+        Profissional profissional = new Profissional();
         profissional.setIdprofissional(idProfissional);
-        
+
         Projeto projeto = new Projeto();
         projeto.setIdprojeto(idProjeto);
-        
+
         profissionalprojeto.setProfissional(profissional);
         profissionalprojeto.setProjeto(projeto);
-        
+
         ProfissionalProjetoDAO profissionalprojetoDAO = new ProfissionalProjetoDAO();
         return profissionalprojetoDAO.delete(profissionalprojeto);
-        
+
     }
 }

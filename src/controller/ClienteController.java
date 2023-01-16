@@ -5,9 +5,12 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import model.bean.Cliente;
+import model.bean.ClienteParticipacaoProjetos;
 import model.bean.Pessoa;
 import model.dao.ClienteDAO;
+import model.dao.ClienteParticipacaoProjetosDAO;
 
 
 /**
@@ -31,6 +34,12 @@ public class ClienteController {
         ClienteDAO clienteDAO = new ClienteDAO();
         return clienteDAO.read();
     }
+    
+    public List<ClienteParticipacaoProjetos> recuperarClientes(){
+        ClienteParticipacaoProjetosDAO cppDAO = new ClienteParticipacaoProjetosDAO();
+        return cppDAO.carregarClientes();
+    }
+            
     public boolean update(int idcliente, String nome, String cpf, String telefone, String endereco){
         Cliente cliente = new Cliente();
         ClienteDAO clienteDAO = new ClienteDAO();

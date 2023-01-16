@@ -4,7 +4,9 @@
  */
 package controller;
 
+import bo.FiltroBO;
 import java.util.ArrayList;
+import java.util.List;
 import model.bean.Cliente;
 import model.bean.Profissional;
 import model.bean.Projeto;
@@ -54,6 +56,11 @@ public class ProjetoController {
         projeto.setIdprojeto(idprojeto);
         
         return projetoDAO.delete(projeto);   
+    }
+
+    public List<Projeto> filtro(FiltroBO filtro) {
+        ProjetoDAO projetoDAO = new ProjetoDAO();
+        return projetoDAO.filtro(filtro);
     }
     
 }
