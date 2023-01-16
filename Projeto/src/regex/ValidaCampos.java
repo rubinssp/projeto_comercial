@@ -22,7 +22,7 @@ public class ValidaCampos {
         return fone.matches("\\(\\p{Digit}{2}\\)\\p{Digit}{4,5}-\\p{Digit}{4}");       
     }
     public static boolean validaCpf(String cpf){
-        return cpf.matches("/^\\p{Digit}{3}.?\\p{Digit}{3}.?\\p{Digit}{3}-\\p{Digit}{2}");       
+        return cpf.matches("\\p{Digit}{3}.\\p{Digit}{3}.\\p{Digit}{3}-\\p{Digit}{2}");       
     }
     public static boolean validaDataInicio (String datainicio){
         return datainicio.matches("\\p{Digit}{2}/\\p{Digit}{2}/\\p{Digit}{4}");
