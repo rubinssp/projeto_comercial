@@ -30,7 +30,7 @@ public class ProfissionalProjetoDAO {
         
         String sql = "INSERT INTO profissionaisprojeto"
                 +" (valor, horastrabalhadas, idprofissional, idprojeto)"
-                +"VALUES (?,?,?,?,?,?,?)";
+                +"VALUES (?,?,?,?,)";
         try {
             stmt = con.prepareStatement(sql);
             stmt.setDouble(1, profissionalprojeto.getValor());

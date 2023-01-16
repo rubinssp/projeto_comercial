@@ -109,7 +109,7 @@ public class ClienteDAO {
             return true;
         
         } catch (SQLException ex) {
-            
+            ex.printStackTrace();
             System.out.println("Erro ao excluir");
             return false;
         } finally {
