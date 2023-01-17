@@ -4,7 +4,7 @@
  */
 package controller;
 
-import bo.FiltroBO;
+import filtros.FiltroParticipacao;
 import java.util.ArrayList;
 import java.util.List;
 import model.bean.Cliente;
@@ -58,7 +58,7 @@ public class ProjetoController {
         return projetoDAO.delete(projeto);   
     }
 
-    public List<Projeto> filtro(FiltroBO filtro) {
+    public List<Projeto> filtro(FiltroParticipacao filtro) {
         ProjetoDAO projetoDAO = new ProjetoDAO();
         return projetoDAO.filtro(filtro);
     }

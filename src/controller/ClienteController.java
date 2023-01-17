@@ -26,9 +26,7 @@ public class ClienteController {
         cliente.setEndereco(endereco);
         
         ClienteDAO clienteDAO = new ClienteDAO();
-        return clienteDAO.create(cliente);
-        
-        
+        return clienteDAO.create(cliente);   
     } 
     public ArrayList<Cliente> read() {
         ClienteDAO clienteDAO = new ClienteDAO();

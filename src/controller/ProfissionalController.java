@@ -4,9 +4,13 @@
  */
 package controller;
 
+import filtros.FiltroConsulta;
 import java.util.ArrayList;
+import java.util.List;
 import model.bean.Profissional;
+import model.bean.ProfissionalParticipacaoProjetos;
 import model.dao.ProfissionalDAO;
+import model.dao.ProfissionalParticipacaoProjetosDAO;
 
 /**
  *
@@ -54,16 +58,16 @@ public class ProfissionalController {
         
         return profissionalDAO.delete(profissional);   
     }
-    public ArrayList<Profissional> getListaProfissionaisporNome(String nome) {
+    public List<Profissional> rodarFiltro(FiltroConsulta tipoConsulta) {
+        
     ProfissionalDAO profissionalDAO = new ProfissionalDAO();
-    return profissionalDAO.getListaProfissionaisporNome(nome);
+    return profissionalDAO.rodarFiltro(tipoConsulta);
     }
-    public ArrayList<Profissional> getListaProfissionaisporCpf(String cpf) {
-    ProfissionalDAO profissionalDAO = new ProfissionalDAO();
-    return profissionalDAO.getListaProfissionaisporCpf(cpf);
-    }
-    public ArrayList<Profissional> getListaProfissionaisporRegistroProfissional(String regprofissional) {
-    ProfissionalDAO profissionalDAO = new ProfissionalDAO();
-    return profissionalDAO.getListaProfissionaisporRegistroProfissional(regprofissional);
+    
+    public List<ProfissionalParticipacaoProjetos> recuperarProfissionais() {
+        
+        ProfissionalParticipacaoProjetosDAO pppDAO = new ProfissionalParticipacaoProjetosDAO();
+        
+        return pppDAO.carregarProfissionais();
     }
 }
