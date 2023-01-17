@@ -4,12 +4,13 @@
  */
 package view;
 
+import filtros.FiltroParticipacao;
 import controller.ProfissionalController;
-import java.util.ArrayList;
+import enums.FiltroParticipacaoTipoEnum;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import model.bean.Profissional;
 import regex.ValidaCampos;
+import tablemodel.ProfissionalProjetosTableModel;
 import tablemodel.ProfissionalTableModel;
 import util.StringUtil;
 
@@ -18,12 +19,12 @@ import util.StringUtil;
  * @author aluno
  */
 public class ProfissionalView extends javax.swing.JFrame {
-    
- 
+   
     private Profissional profissional;
 
     ProfissionalController profissionalController = new ProfissionalController();
     ProfissionalTableModel modeloTableProfissionais;
+    ProfissionalProjetosTableModel modeloTableProfissionaisProjeto;
      
     public ProfissionalView() {
         initComponents(); 
@@ -41,8 +42,8 @@ public void limpaCampos(){
     }
 public void getListaProfissionais(){
         modeloTableProfissionais = new ProfissionalTableModel(profissionalController.read());        
-
-        jTableProfissionais.setModel(modeloTableProfissionais);
+        modeloTableProfissionaisProjeto = new ProfissionalProjetosTableModel(profissionalController.recuperarProfissionais());
+        jTableProfissionais.setModel(modeloTableProfissionaisProjeto);
     }
  private boolean validaCamposProfissionais() {
         if(!ValidaCampos.validaNome(jTextFieldNome.getText())){
@@ -356,13 +357,15 @@ public void getListaProfissionais(){
             Profissional profissional =  modeloTableProfissionais.getProfissional(jTableProfissionais.getSelectedRow());
             this.profissional = profissional;
              
-            jTextFieldNome.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 0).toString());
-            jFormattedTextFieldCPF.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 1).toString());
-            jFormattedTextFieldTelefone.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 2).toString());
-            jTextFieldEndereco.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 3).toString());
-            jTextFieldRegprofissional.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 4).toString());
-            jTextFieldDescricao.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 5).toString());
+            jTextFieldNome.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 1).toString());
+            jFormattedTextFieldCPF.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 2).toString());
+            jFormattedTextFieldTelefone.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 3).toString());
+            jTextFieldEndereco.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 4).toString());
+            jTextFieldRegprofissional.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 5).toString());
+            jTextFieldDescricao.setText(jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 6).toString());
             
+            jButtonExcluir.setEnabled((int)jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 7)== 0);
+            jButtonProjetos.setEnabled((int)jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 7)== 1);
         }
     }//GEN-LAST:event_jTableProfissionaisMouseClicked
 
@@ -371,10 +374,9 @@ public void getListaProfissionais(){
     }//GEN-LAST:event_jTextFieldRegprofissionalActionPerformed
 
     private void jButtonProjetosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProjetosActionPerformed
-        ProfissionalProjetoView frmProfissionalProjeto = new ProfissionalProjetoView();
-        frmProfissionalProjeto.profissional = this.profissional;
-        frmProfissionalProjeto.setVisible(true);
-        frmProfissionalProjeto.jTextFieldProfissional.setText(this.profissional.getNome());
+        ParticipacaoProjetosView frmProjeto = new ParticipacaoProjetosView();
+        frmProjeto.setFiltro(new FiltroParticipacao((int)jTableProfissionais.getValueAt(jTableProfissionais.getSelectedRow(), 0), FiltroParticipacaoTipoEnum.PROFISSIONAL));
+        frmProjeto.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonProjetosActionPerformed
 

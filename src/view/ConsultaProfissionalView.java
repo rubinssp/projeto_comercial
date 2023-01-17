@@ -7,6 +7,9 @@ package view;
 import java.sql.Connection;
 import connection.ConnectionFactory;
 import controller.ProfissionalController;
+import enums.FiltroConsultaTipoEnum;
+import enums.FiltroParticipacaoTipoEnum;
+import filtros.FiltroConsulta;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -57,6 +60,7 @@ public class ConsultaProfissionalView extends javax.swing.JFrame {
 
         jLabel1.setText("Selecione o campo para busca:");
 
+        jTextFieldBuscar.setEnabled(false);
         jTextFieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFieldBuscarKeyTyped(evt);
@@ -81,7 +85,7 @@ public class ConsultaProfissionalView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableProfissional);
 
-        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum", "Nome", "CPF", "Registro Profissional", " " }));
+        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum", "Nome", "CPF", "Registro Profissional" }));
         jComboBoxBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxBuscarActionPerformed(evt);
@@ -149,26 +153,36 @@ public class ConsultaProfissionalView extends javax.swing.JFrame {
             tableModel = new ProfissionalTableModel(profissionalController.read());
             jTableProfissional.setModel(tableModel);
         }
+        jTextFieldBuscar.setEnabled(jComboBoxBuscar.getSelectedIndex() != 0);
         jTextFieldBuscar.requestFocus();
                                          
     }//GEN-LAST:event_jComboBoxBuscarActionPerformed
 
     private void jTextFieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarKeyTyped
+        
         String chave = jTextFieldBuscar.getText();
         if(evt.getKeyChar() != '\b'){
-          chave = chave + evt.getKeyChar();
+          
+            chave = chave + evt.getKeyChar();
         }
+        
+        FiltroConsultaTipoEnum tipoConsulta = null;
+        
         switch(jComboBoxBuscar.getSelectedIndex()){
             case 1:
-                tableModel = new ProfissionalTableModel(profissionalController.getListaProfissionaisporNome(chave));
+                tipoConsulta = FiltroConsultaTipoEnum.NOME;
                 break;
             case 2:
-                tableModel = new ProfissionalTableModel(profissionalController.getListaProfissionaisporCpf(chave));
+                tipoConsulta = FiltroConsultaTipoEnum.CPF;
                 break;
             case 3:
-                tableModel = new ProfissionalTableModel(profissionalController.getListaProfissionaisporRegistroProfissional(chave));
+                tipoConsulta = FiltroConsultaTipoEnum.REGISTRO;
                 break;
         }
+        
+        FiltroConsulta filtro = new FiltroConsulta(chave, tipoConsulta);
+        
+        tableModel = new ProfissionalTableModel(profissionalController.rodarFiltro(filtro));
         jTableProfissional.setModel(tableModel);
     }//GEN-LAST:event_jTextFieldBuscarKeyTyped
 

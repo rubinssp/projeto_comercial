@@ -83,6 +83,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldBuscar">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
       <Events>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldBuscarKeyTyped"/>
       </Events>
@@ -113,12 +116,11 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxBuscar">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
+          <StringArray count="4">
             <StringItem index="0" value="Nenhum"/>
             <StringItem index="1" value="Nome"/>
             <StringItem index="2" value="CPF"/>
             <StringItem index="3" value="Registro Profissional"/>
-            <StringItem index="4" value=" "/>
           </StringArray>
         </Property>
       </Properties>

@@ -4,7 +4,7 @@
  */
 package view;
 
-import bo.FiltroBO;
+import filtros.FiltroParticipacao;
 import controller.ClienteController;
 import controller.ProfissionalController;
 import controller.ProjetoController;
@@ -24,7 +24,7 @@ public class ParticipacaoProjetosView extends javax.swing.JFrame {
 
     ProjetoController projetoController = new ProjetoController();
     ProjetoTableModel modeloTableProjetos;
-    FiltroBO filtro;
+    FiltroParticipacao filtro;
 
     public ParticipacaoProjetosView() {
 
@@ -73,9 +73,8 @@ public class ParticipacaoProjetosView extends javax.swing.JFrame {
         return true;
     }
 
-    public void setFiltro(FiltroBO filtro) {
+    public void setFiltro(FiltroParticipacao filtro) {
         this.filtro = filtro;
-        System.out.println("jejeje" + filtro);
         modeloTableProjetos = new ProjetoTableModel(projetoController.filtro(this.filtro));
 
         jTableProjetos.setModel(modeloTableProjetos);

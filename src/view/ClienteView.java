@@ -4,8 +4,9 @@
  */
 package view;
 
-import bo.FiltroBO;
+import filtros.FiltroParticipacao;
 import controller.ClienteController;
+import enums.FiltroParticipacaoTipoEnum;
 import javax.swing.JOptionPane;
 import model.bean.Cliente;
 import regex.ValidaCampos;
@@ -348,7 +349,7 @@ public class ClienteView extends javax.swing.JFrame {
 
     private void jButtonParticipacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonParticipacaoActionPerformed
         ParticipacaoProjetosView frmProjeto = new ParticipacaoProjetosView();
-        frmProjeto.setFiltro(new FiltroBO((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0),"cliente"));
+        frmProjeto.setFiltro(new FiltroParticipacao((int)jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0), FiltroParticipacaoTipoEnum.CLIENTE));
         frmProjeto.setVisible(true);
         
         this.dispose();
