@@ -4,8 +4,9 @@
  */
 package model.dao;
 
-import bo.FiltroBO;
+import filtros.FiltroParticipacao;
 import connection.ConnectionFactory;
+import enums.FiltroParticipacaoTipoEnum;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -121,7 +122,7 @@ public class ProjetoDAO {
         }
     }
 
-    public ArrayList<Projeto> filtro(FiltroBO filtro) {
+    public ArrayList<Projeto> filtro(FiltroParticipacao filtro) {
 
         StringBuilder sql = new StringBuilder();
         ArrayList<Projeto> listaProjetos = new ArrayList<>();
@@ -129,7 +130,7 @@ public class ProjetoDAO {
         sql.append("SELECT * FROM view_participacao_projetos ");
         if (Objects.nonNull(filtro)) {
             sql.append("WHERE ");
-            if (filtro.getTipo().equalsIgnoreCase("cliente")) {
+            if (filtro.getTipo().equals(FiltroParticipacaoTipoEnum.CLIENTE)) {
                 sql.append("idcliente ");
             }else{
                 sql.append("idprofissional ");

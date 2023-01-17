@@ -12,30 +12,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.bean.ClienteParticipacaoProjetos;
+import model.bean.ProfissionalParticipacaoProjetos;
 
 /**
  *
  * @author luisf
  */
-public class ClienteParticipacaoProjetosDAO {
+public class ProfissionalParticipacaoProjetosDAO {
+    
+    public List<ProfissionalParticipacaoProjetos> carregarProfissionais() {
+        List<ProfissionalParticipacaoProjetos> clienteParticipacaoProjeto = new ArrayList();
 
-    public List<ClienteParticipacaoProjetos> carregarClientes() {
-        List<ClienteParticipacaoProjetos> clienteParticipacaoProjeto = new ArrayList();
-
-        String sql = "select * from view_cliente_participacao_projeto order by idcliente";
+        String sql = "select * from view_profissional_participacao_projeto order by idprofissional";
         try ( Connection con = ConnectionFactory.getConnection();  PreparedStatement stmt = con.prepareStatement(sql);) {
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                ClienteParticipacaoProjetos cliente = new ClienteParticipacaoProjetos(rs);
+                ProfissionalParticipacaoProjetos profissional = new ProfissionalParticipacaoProjetos(rs);
 
-                clienteParticipacaoProjeto.add(cliente);
+                clienteParticipacaoProjeto.add(profissional);
             }
         } catch (SQLException ex) {
-            System.out.println("Erro ao ler os clientes");
+            System.out.println("Erro ao ler os profissionais");
             ex.printStackTrace();
         }
         return clienteParticipacaoProjeto;
     }
+    
 }
