@@ -2,17 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package bo;
+package filtros;
+
+import enums.FiltroParticipacaoTipoEnum;
 
 /**
  *
  * @author luisf
  */
-public class FiltroBO {
+public class FiltroParticipacao {
     private int id;
-    private String tipo;
+    private FiltroParticipacaoTipoEnum tipo;
 
-    public FiltroBO(int id, String tipo) {
+    public FiltroParticipacao(int id, FiltroParticipacaoTipoEnum tipo) {
         this.id = id;
         this.tipo = tipo;
     }
@@ -21,7 +23,7 @@ public class FiltroBO {
         return id;
     }
 
-    public String getTipo() {
+    public FiltroParticipacaoTipoEnum getTipo() {
         return tipo;
     }
 
