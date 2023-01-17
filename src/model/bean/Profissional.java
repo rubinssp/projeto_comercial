@@ -4,19 +4,34 @@
  */
 package model.bean;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author aluno
  */
 public class Profissional extends Pessoa {
+
     private int idprofissional;
     private String regprofissional;
     private String descricao;
     private Pessoa pessoa;
 
-    public Profissional(){
+    public Profissional() {
     }
-    
+
+    public Profissional(ResultSet rs) throws SQLException {
+
+        this.setIdprofissional(rs.getInt("idprofissional"));
+        this.setNome(rs.getString("nome"));
+        this.setCpf(rs.getString("cpf"));
+        this.setTelefone(rs.getString("telefone"));
+        this.setEndereco(rs.getString("endereco"));
+        this.setRegprofissional(rs.getString("regprofissional"));
+        this.setDescricao(rs.getString("descricao"));
+    }
+
     public int getIdprofissional() {
         return idprofissional;
     }
@@ -24,7 +39,7 @@ public class Profissional extends Pessoa {
     public void setIdprofissional(int idprofissional) {
         this.idprofissional = idprofissional;
     }
-
+    
     public String getRegprofissional() {
         return regprofissional;
     }
@@ -48,7 +63,8 @@ public class Profissional extends Pessoa {
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
-       @Override
+
+    @Override
     public String toString() {
         return this.getNome();
     }
